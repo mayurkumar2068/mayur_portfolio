@@ -1,11 +1,13 @@
 {
-  "name": "mayur-portfolio",
+  "name": "mayur_portfolio",
   "version": "1.0.0",
-  "description": "Mayur Bobade's Professional Portfolio",
+  "description": "Mayur Bobade Portfolio",
   "scripts": {
-    "build": "flutter build web --release",
-    "deploy": "node deploy-supabase.js",
-    "build-deploy": "flutter build web --release && node deploy-supabase.js"
+    "build": "chmod +x build.sh && ./build.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mayurkumar2068/mayur_portfolio.git"
   },
   "author": "Mayur Bobade",
   "license": "MIT"
