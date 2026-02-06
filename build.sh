@@ -5,8 +5,8 @@ echo "🚀 Starting Flutter Web Build for Netlify..."
 
 # Install Flutter if not present
 if [ ! -d "flutter" ]; then
-    echo "📦 Cloning Flutter SDK..."
-    git clone https://github.com/flutter/flutter.git -b stable --depth 1
+    echo "📦 Cloning Flutter SDK version 3.38.9..."
+    git clone https://github.com/flutter/flutter.git -b 3.38.9 --depth 1
 fi
 
 # Add Flutter to PATH
