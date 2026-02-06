@@ -1,0 +1,12 @@
+{
+  "name": "mayur-portfolio",
+  "version": "1.0.0",
+  "description": "Mayur Bobade's Professional Portfolio",
+  "scripts": {
+    "build": "flutter build web --release",
+    "deploy": "node deploy-supabase.js",
+    "build-deploy": "flutter build web --release && node deploy-supabase.js"
+  },
+  "author": "Mayur Bobade",
+  "license": "MIT"
+}

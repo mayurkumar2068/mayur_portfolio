@@ -1,0 +1,53 @@
+name: Deploy to Supabase Hosting
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build Web
+        run: flutter build web --release
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Supabase CLI
+        run: npm install -g supabase
+
+      - name: Deploy to Supabase Hosting
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_ID: bsnvsraqmdzidfihgwvn
+        run: |
+          supabase link --project-ref $SUPABASE_PROJECT_ID
+          supabase hosting deploy build/web
+
+      - name: Deployment Success
+        run: |
+          echo "✅ Deployment successful!"
+          echo "🌐 Your portfolio is live at:"
+          echo "https://bsnvsraqmdzidfihgwvn.supabase.co"
