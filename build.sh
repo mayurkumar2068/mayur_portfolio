@@ -1,18 +1,23 @@
 #!/bin/bash
-
-# Netlify Build Script for Flutter Web
+set -e
 
 echo "🚀 Starting Flutter Web Build for Netlify..."
 
-# Install Flutter
-if ! command -v flutter &> /dev/null; then
-    echo "📦 Installing Flutter..."
+# Install Flutter if not present
+if [ ! -d "flutter" ]; then
+    echo "📦 Cloning Flutter SDK..."
     git clone https://github.com/flutter/flutter.git -b stable --depth 1
-    export PATH="$PATH:`pwd`/flutter/bin"
-    
-    # Disable analytics
-    flutter config --no-analytics
 fi
+
+# Add Flutter to PATH
+export PATH="$PATH:$PWD/flutter/bin"
+
+# Precache Flutter
+echo "📦 Precaching Flutter..."
+flutter precache --web
+
+# Disable analytics
+flutter config --no-analytics
 
 # Get Flutter version
 echo "📌 Flutter version:"
@@ -22,14 +27,20 @@ flutter --version
 echo "🌐 Enabling web support..."
 flutter config --enable-web
 
-# Clean and get dependencies
+# Get dependencies
 echo "📦 Getting dependencies..."
-flutter clean
 flutter pub get
 
 # Build web
 echo "🔨 Building web app..."
 flutter build web --release --web-renderer canvaskit
 
-echo "✅ Build complete!"
-echo "📁 Output directory: build/web"
+# Verify build output
+if [ -d "build/web" ]; then
+    echo "✅ Build complete!"
+    echo "📁 Build output:"
+    ls -la build/web
+else
+    echo "❌ Build failed - build/web directory not found"
+    exit 1
+fi
